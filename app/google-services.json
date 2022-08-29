@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "272970999017",
+    "project_id": "takenote-pro",
+    "storage_bucket": "takenote-pro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272970999017:android:650e191abb4bd3dadd7c78",
+        "android_client_info": {
+          "package_name": "com.takenotepro.takenotepro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "272970999017-709dq52a6ar32k61qfbrm835rutdm3ns.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXUYalwkClJtx7VOhCCqwpy_XYOJyzFxU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "272970999017-709dq52a6ar32k61qfbrm835rutdm3ns.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
