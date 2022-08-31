@@ -63,45 +63,59 @@ public class SignUpActivity extends AppCompatActivity {
         String password = passwordEditText.getText().toString();
         String confirmPassword = confirmPassEditText.getText().toString();
 
-        boolean isValid = validate(email, password, confirmPassword);
-        if(!isValid){
-            return;
-        }
+//        boolean isValid = validate(email, password, confirmPassword);
+//        if(!isValid){
+//            return;
+//        }
 
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignUpActivity.this,
-                new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(SignUpActivity.this, "Successfully created an account", Toast.LENGTH_SHORT).show();
-                            firebaseAuth.getCurrentUser().sendEmailVerification();
-                            firebaseAuth.signOut();
-                            finish();
-                        }else{
-                            Toast.makeText(SignUpActivity.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    boolean validate(String email, String password, String confirmPassword){
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             emailEditText.setError("Invalid Email, Please enter valid email");
-            return false;
-        }
-
-        // validate the password
-        if(password.length() < 5){
+        } else if(password.length() < 5){
             passwordEditText.setError("Password must contain at least 5 characters");
-            return false;
-        }
-
-        //validate the confirm password
-        if(!password.equals(confirmPassword)){
+        } else if(!password.equals(confirmPassword)){
             confirmPassEditText.setError("Passwords don't match");
-            return false;
+        } else{
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignUpActivity.this,
+                    new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(SignUpActivity.this, "Successfully created an account", Toast.LENGTH_SHORT).show();
+                                firebaseAuth.getCurrentUser().sendEmailVerification();
+                                firebaseAuth.signOut();
+                                finish();
+                            }else{
+                                Toast.makeText(SignUpActivity.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
         }
-        return true;
     }
+
+//    boolean validate(String email, String password, String confirmPassword){
+//        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+//            emailEditText.setError("Invalid Email, Please enter valid email");
+//            return false;
+//        } else if(password.length() < 5){
+//            passwordEditText.setError("Password must contain at least 5 characters");
+//            return false;
+//        } else if(!password.equals(confirmPassword)){
+//            confirmPassEditText.setError("Passwords don't match");
+//            return false;
+//        }
+//
+//        // validate the password
+//        if(password.length() < 5){
+//            passwordEditText.setError("Password must contain at least 5 characters");
+//            return false;
+//        }
+//
+//        //validate the confirm password
+//        if(!password.equals(confirmPassword)){
+//            confirmPassEditText.setError("Passwords don't match");
+//            return false;
+//        }
+//        return true;
+//    }
 }

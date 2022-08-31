@@ -6,13 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
-    <TextView
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome to Home activity"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/primary_green"
+        android:clickable="true"
+        android:contentDescription="add note"
+        android:tintMode="@color/white"
+        app:fabCustomSize="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:maxImageSize="35dp"
+        app:srcCompat="@drawable/ic_baseline_note_add_24" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
