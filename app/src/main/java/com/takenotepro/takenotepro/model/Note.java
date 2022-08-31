@@ -1,14 +1,18 @@
 package com.takenotepro.takenotepro.model;
 
+import com.google.firebase.Timestamp;
+
 public class Note {
     private String Title;
     private String Content;
-    private String TimeStamp;
+    Timestamp timestamp;
+
+    public Note() {
+    }
 
     public Note(String title, String content, String timeStamp) {
         Title = title;
         Content = content;
-        TimeStamp = timeStamp;
     }
 
     public String getTitle() {
@@ -27,11 +31,11 @@ public class Note {
         Content = content;
     }
 
-    public String getTimeStamp() {
-        return TimeStamp;
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
-    public void setTimeStamp(String timeStamp) {
-        TimeStamp = timeStamp;
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 }
