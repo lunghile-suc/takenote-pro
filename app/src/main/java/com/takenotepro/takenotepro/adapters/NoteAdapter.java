@@ -1,6 +1,8 @@
 package com.takenotepro.takenotepro.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.takenotepro.takenotepro.R;
+import com.takenotepro.takenotepro.activities.AddNoteActivity;
+import com.takenotepro.takenotepro.activities.MainActivity;
 import com.takenotepro.takenotepro.model.Note;
 import com.takenotepro.takenotepro.utils.TimestampToString;
 
@@ -21,13 +25,29 @@ public class NoteAdapter extends FirestoreRecyclerAdapter<Note, NoteAdapter.Note
 
     public NoteAdapter(@NonNull FirestoreRecyclerOptions<Note> options, Context context) {
         super(options);
+        this.context = context;
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull NoteViewHolder holder, int position, @NonNull Note note) {
+    protected void onBindViewHolder(@NonNull NoteViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull Note note) {
         holder.noteTitle.setText(note.getTitle());
         holder.noteContent.setText(note.getContent());
         holder.noteTimstamp.setText(TimestampToString.timestampToString(note.getTimestamp()));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, AddNoteActivity.class);
+
+                String docId = String.valueOf(NoteAdapter.this.getSnapshots().getSnapshot(position));
+
+                intent.putExtra("title", note.getTitle());
+                intent.putExtra("content", note.getContent());
+                intent.putExtra("docId", docId);
+
+                context.startActivity(intent);
+            }
+        });
     }
 
     @NonNull

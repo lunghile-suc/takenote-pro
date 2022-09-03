@@ -1,6 +1,8 @@
 package com.takenotepro.takenotepro.activities;
 
+import android.content.ContentValues;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +24,10 @@ public class AddNoteActivity extends AppCompatActivity {
     Button saveNoteBtn;
     EditText noteTitleEdtxt;
     EditText noteContentEdtxt;
+    String title;
+    String content;
+    String docId;
+    boolean isEditMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +37,21 @@ public class AddNoteActivity extends AppCompatActivity {
         saveNoteBtn = findViewById(R.id.saveNoteBtn);
         noteTitleEdtxt = findViewById(R.id.noteTitle);
         noteContentEdtxt = findViewById(R.id.noteContent);
+
+        title = getIntent().getStringExtra("title");
+        content = getIntent().getStringExtra("content");
+        docId = getIntent().getStringExtra("docId");
+
+        if(docId != null && !docId.isEmpty()){
+            isEditMode = true;
+        }
+
+        noteTitleEdtxt.setText(title);
+        noteContentEdtxt.setText(content);
+
+        if(isEditMode){
+            saveNoteBtn.setText("Update Note");
+        }
 
         saveNoteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +65,10 @@ public class AddNoteActivity extends AppCompatActivity {
         String noteTitle = noteTitleEdtxt.getText().toString();
         String noteContent = noteContentEdtxt.getText().toString();
 
+        final String TAG = "AddNoteActivity";
+
+        Log.d(TAG, "The docID" + docId);
+
         if(noteTitle.isEmpty() && noteTitle == null){
             noteTitleEdtxt.setHint("Title is missing");
             noteTitleEdtxt.setHintTextColor(getResources().getColor(R.color.black));
@@ -56,7 +81,13 @@ public class AddNoteActivity extends AppCompatActivity {
         note.setTimestamp(Timestamp.now());
 
         DocumentReference documentReference;
-        documentReference = Collections.getCollectionReferenceForNotes().document();
+
+
+        if(isEditMode){
+            documentReference = Collections.getCollectionReferenceForNotes().document(docId);
+        } else{
+            documentReference = Collections.getCollectionReferenceForNotes().document();
+        }
 
         documentReference.set(note).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
