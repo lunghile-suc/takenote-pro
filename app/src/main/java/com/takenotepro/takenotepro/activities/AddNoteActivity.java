@@ -23,12 +23,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.takenotepro.takenotepro.R;
 import com.takenotepro.takenotepro.model.Note;
 import com.takenotepro.takenotepro.utils.Collections;
+import com.takenotepro.takenotepro.utils.ProgressDialog;
 import com.takenotepro.takenotepro.utils.Toasts;
 
 public class AddNoteActivity extends AppCompatActivity {
 
     final String TAG = "AddNoteActivity";
     DocumentReference documentReference;
+    ProgressDialog progressDialog = new ProgressDialog(AddNoteActivity.this);
 
     Button saveNoteBtn;
     ImageView toolbar_menu;
@@ -117,6 +119,8 @@ public class AddNoteActivity extends AppCompatActivity {
         note.setContent(noteContent);
         note.setTimestamp(Timestamp.now());
 
+        progressDialog.startProgressBar();
+
         if(isEditMode){
             updateNote();
         }else {
@@ -126,6 +130,9 @@ public class AddNoteActivity extends AppCompatActivity {
         documentReference.set(note).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+
+                progressDialog.dismissDialog();
+
                 if (task.isSuccessful()) {
                     // note added successfully
                     Toasts.showToast(AddNoteActivity.this, "Note saved successfully");

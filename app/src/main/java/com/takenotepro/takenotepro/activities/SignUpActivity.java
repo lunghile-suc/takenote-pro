@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.takenotepro.takenotepro.R;
+import com.takenotepro.takenotepro.utils.ProgressDialog;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -28,6 +29,8 @@ public class SignUpActivity extends AppCompatActivity {
     EditText passwordEditText;
     EditText confirmPassEditText;
     Button signUpBtn;
+
+    ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +78,18 @@ public class SignUpActivity extends AppCompatActivity {
         } else if(!password.equals(confirmPassword)){
             confirmPassEditText.setError("Passwords don't match");
         } else{
+
+            progressDialog.startProgressBar();
+
             FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
             firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignUpActivity.this,
                     new OnCompleteListener<AuthResult>() {
+
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            progressDialog.dismissDialog();
+
                             if(task.isSuccessful()){
                                 Toast.makeText(SignUpActivity.this, "Successfully created an account", Toast.LENGTH_SHORT).show();
                                 firebaseAuth.getCurrentUser().sendEmailVerification();

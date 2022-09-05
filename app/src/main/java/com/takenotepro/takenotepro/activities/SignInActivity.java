@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.takenotepro.takenotepro.R;
+import com.takenotepro.takenotepro.utils.ProgressDialog;
 import com.takenotepro.takenotepro.utils.Toasts;
 
 public class SignInActivity extends AppCompatActivity {
@@ -24,6 +25,8 @@ public class SignInActivity extends AppCompatActivity {
     EditText emailEditText;
     EditText passwordEditText;
     Button signInBtn;
+
+    ProgressDialog progressDialog = new ProgressDialog(SignInActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +64,15 @@ public class SignInActivity extends AppCompatActivity {
             return;
         }
 
+        progressDialog.startProgressBar();
+
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(SignInActivity.this,
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        progressDialog.dismissDialog();
 
                         if(task.isSuccessful()){
                             if(firebaseAuth.getCurrentUser().isEmailVerified()){
